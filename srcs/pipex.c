@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/pipex.h"
+#include "../inc/printf/printf.h"
 
 void	child_proc(char **argv, char **envp, int *fd)
 {
@@ -18,11 +19,11 @@ void	child_proc(char **argv, char **envp, int *fd)
 
 	file_in = open(argv[1], O_RDONLY, 0777);
 	if (file_in == -1)
-		return (-1);
+		error();
 	dup2(fd[1], STDOUT_FILENO);
 	dup2(file_in, STDIN_FILENO);
 	close(fd[0]);
-	executor(argv[2], envp) //funcion utils a definir
+	executor(argv[2], envp); //funcion utils a definir
 }
 
 void	parent_proc(char **argv, char **envp, int *fd)
@@ -31,11 +32,11 @@ void	parent_proc(char **argv, char **envp, int *fd)
 
 	file_out = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (file_out == -1)
-		return (-1);
+		error();
 	dup2(fd[0], STDIN_FILENO);
 	dup2(file_out, STDOUT_FILENO);
 	close(fd[1]);
-	executor(argv[3], envp) //funcion utils a definir
+	executor(argv[3], envp); //funcion utils a definir
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -46,19 +47,19 @@ int	main(int argc, char **argv, char **envp)
 	if (argc == 5)
 	{
 		if (pipe(fd) == -1)
-			return (-1);
+			error();
 		pid = fork();
 		if (pid == -1)
-			return (-1);
+			error();
 		if (pid == 0)
 			child_proc(argv, envp, fd);
 		waitpid(pid, NULL, 0);
-		parent_proc(argv, envp, fd)
+		parent_proc(argv, envp, fd);
 	}
 	else
 	{
-		ft_printf("\nERROR: wrong number of arguments\n");
-		ft_printf("EX: ./pipex <file 1> <command 1> <command 2> <file 2>")
+		write(1, "\nERROR: wrong number of arguments\n", 34);
+		ft_printf("EX: ./pipex <file 1> <command 1> <command 2> <file 2>");
 	}
 	return (0);
 }
