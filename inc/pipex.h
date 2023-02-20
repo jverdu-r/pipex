@@ -20,6 +20,8 @@
 # include <fcntl.h>
 # include <errno.h>
 
-
+int	    main(int argc, char **argv, char **envp);
+void    executor(char *argv, char **envp);
+void    error();
 
 #endif
