@@ -14,14 +14,17 @@
 # define PIPEX_H
 
 # include "./libft/libft.h"
-# include "./printf/printf.h"
 # include <sys/wait.h>
 # include <string.h>
 # include <fcntl.h>
 # include <errno.h>
 
 int	    main(int argc, char **argv, char **envp);
+int     open_file(char *argv, int i);
+int	    gnllite(char **line);
 void    executor(char *argv, char **envp);
 void    error();
+void    usage(void);
+
 
 #endif
