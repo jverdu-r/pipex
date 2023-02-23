@@ -50,13 +50,11 @@ void	here_doc(char *limit, int argc)
 	if (read == 0)
 	{
 		close(fd[0]);
-		line = get_next_line(fd[1]);
-		while (get_next_line(fd[1]))
+		while (gnllite(&line))
 		{
 			if (ft_strncmp(line, limit, ft_strlen(limit)) == 0)
 				exit(EXIT_SUCCESS);
 			ft_putstr_fd(line, fd[1]);
-			line = get_next_line(fd[1]);
 		}
 	}
 	else
@@ -65,6 +63,26 @@ void	here_doc(char *limit, int argc)
 		dup2(fd[0], STDIN_FILENO);
 		wait(NULL);
 	}
+}
+
+void	executor(char *argv, char **envp)
+{
+	char	**cmd;
+	char	*path;
+	int		i;
+
+	i = 0;
+	cmd = ft_split(((const char *)argv), ' ');
+	path = pathfinder(cmd[0], envp);
+	if (!path)
+	{
+		while (cmd[i++])
+			free(cmd[i]);
+		free(cmd);
+		error();
+	}
+	if (execve(path, cmd, envp) == -1)
+		error();
 }
 
 int	main(int argc, char **argv, char **envp)

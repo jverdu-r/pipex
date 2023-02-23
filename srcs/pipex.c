@@ -6,12 +6,11 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 17:28:15 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/02/16 18:32:19 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/02/22 17:57:30 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/pipex.h"
-#include "../inc/printf/printf.h"
 
 void	child_proc(char **argv, char **envp, int *fd)
 {
@@ -23,7 +22,7 @@ void	child_proc(char **argv, char **envp, int *fd)
 	dup2(fd[1], STDOUT_FILENO);
 	dup2(file_in, STDIN_FILENO);
 	close(fd[0]);
-	executor(argv[2], envp); //funcion utils a definir
+	executor(argv[2], envp);
 }
 
 void	parent_proc(char **argv, char **envp, int *fd)
@@ -36,13 +35,13 @@ void	parent_proc(char **argv, char **envp, int *fd)
 	dup2(fd[0], STDIN_FILENO);
 	dup2(file_out, STDOUT_FILENO);
 	close(fd[1]);
-	executor(argv[3], envp); //funcion utils a definir
+	executor(argv[3], envp);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	pid_t	pid;
-	int 	fd[2];
+	int		fd[2];
 
 	if (argc == 5)
 	{
@@ -58,8 +57,8 @@ int	main(int argc, char **argv, char **envp)
 	}
 	else
 	{
-		write(1, "\nERROR: wrong number of arguments\n", 34);
-		ft_printf("EX: ./pipex <file 1> <command 1> <command 2> <file 2>");
+		ft_putstr_fd("\nERROR: wrong number of arguments\n", 1);
+		ft_putstr_fd("EX: ./pipex <file 1> <cmd 1> <cmd 2> <file 2>", 1);
 	}
 	return (0);
 }
