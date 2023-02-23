@@ -6,7 +6,7 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 17:14:14 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/02/22 19:39:46 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/02/23 18:56:04 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,22 @@ void	executor(char *argv, char **envp)
 		error();
 }
 
+int	checker(char **argv, int argc)
+{
+	if (access(argv[1], F_OK) == -1)
+		return (-1);
+	if (access(argv[argc -1], F_OK) == -1)
+		return (-1);
+	return (0);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	int	i;
 	int	file_in;
 	int	file_out;
 
-	if (argc >= 5)
+	if (argc >= 5 && (checker(argv, argc) == 0))
 	{
 		if (ft_strncmp(argv[1], "here_doc", 8) == 0)
 		{

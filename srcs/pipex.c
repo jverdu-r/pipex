@@ -6,7 +6,7 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 17:28:15 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/02/22 17:57:30 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/02/23 18:55:48 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,22 @@ void	parent_proc(char **argv, char **envp, int *fd)
 	executor(argv[3], envp);
 }
 
+int	checker(char **argv, int argc)
+{
+	if (access(argv[1], F_OK) == -1)
+		return (-1);
+	if (access(argv[argc -1], F_OK) == -1)
+		return (-1);
+	return (0);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	pid_t	pid;
 	int		fd[2];
 
+	if (checker(argv, argc) != 0)
+		return (0);
 	if (argc == 5)
 	{
 		if (pipe(fd) == -1)
