@@ -12,10 +12,8 @@
 
 NAME		=	pipex
 LIBFT		=	inc/libft
-GNL			=	inc/get_next_line
-PRINTF		=	inc/printf
-LIBFT_A		=	$(addprefix $(LIBFT), libft.a)
-PRINTF_A	=	$(addprefix $(printf), pintf.a)
+LIBFT_A		=	inc/libft/libft.a
+PRINTF_A	=	inc/printf/printf.a
 
 CC			=	gcc
 INCLUDE		=	includes
@@ -25,32 +23,31 @@ SRCS		=	srcs/pipex.c \
 				srcs/utils.c
 
 BNSSRCS		=   srcs/pipex_bonus.c \
-				srcs/utils_bonus.c
+				srcs/utils_bonus.c \
+
 
 OBJS		=	$(SRCS:%.c=%.o)
 
 BNSOBJS		=	$(BNSSRCS:%.c=%.o)
 
+.c.o:
+				@$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
+				@echo "Compiling $<."
+
+$(NAME):		$(OBJS) $(LIBFT_A)
+				@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT) -lft -o$(NAME)
+
 all:			$(NAME)
 
-$(NAME):		$(OBJS) $(LIBFT_A) $(PRINTF_A)
-				@$(CC) $(CFLAGS) $(OBJS) -L$(PRINTF) -lft -L$(LIBFT) -lft -o$(NAME)
-
 $(LIBFT_A):
-				@$(MAKE) -s -C $(LIBFT)
+				@$(MAKE) -sC $(LIBFT)
 				@echo "Compiled $(LIBFT_A)."
 
-$(PRINTF_A):
-				@$(MAKE) -s -C $(PRINTF)
-				@echo "Compiled $(PRINTF_A)."
 
 bonus:
 				@$(RM) $(OBJS)
 				make OBJS="$(BNSOBJS)"
 
-.c.o:
-				@$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
-				@echo "Compiling $<."
 
 localclean:
 				@$(RM) $(OBJS) $(BNSOBJS)
@@ -59,8 +56,6 @@ localclean:
 fclean:			localclean
 				@$(MAKE) fclean -s -C $(LIBFT)
 				@echo "Full clean libft."
-				@$(MAKE) fclean -s -C $(PRINTF)
-				@echo "Full clean printf."
 				@$(RM) $(NAME)
 				@echo "Removed executable."
 
