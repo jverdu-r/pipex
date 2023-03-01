@@ -38,22 +38,11 @@ void	parent_proc(char **argv, char **envp, int *fd)
 	executor(argv[3], envp);
 }
 
-int	checker(char **argv, int argc)
-{
-	if (access(argv[1], F_OK) == -1)
-		return (-1);
-	if (access(argv[argc -1], F_OK) == -1)
-		return (-1);
-	return (0);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	pid_t	pid;
 	int		fd[2];
 
-	if (checker(argv, argc) != 0)
-		return (0);
 	if (argc == 5)
 	{
 		if (pipe(fd) == -1)
@@ -62,8 +51,10 @@ int	main(int argc, char **argv, char **envp)
 		if (pid == -1)
 			error();
 		if (pid == 0)
+		{
 			child_proc(argv, envp, fd);
-		waitpid(pid, NULL, 0);
+			waitpid(pid, NULL, 0);
+		}
 		parent_proc(argv, envp, fd);
 	}
 	else

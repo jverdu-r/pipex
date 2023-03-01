@@ -27,12 +27,12 @@ void	child_proc(char *arg, char **envp)
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
 		executor(arg, envp);
+		waitpid(pid, NULL, 0);
 	}
 	else
 	{
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
-		waitpid(pid, NULL, 0);
 	}
 }
 
@@ -85,22 +85,13 @@ void	executor(char *argv, char **envp)
 		error();
 }
 
-int	checker(char **argv, int argc)
-{
-	if (access(argv[1], F_OK) == -1)
-		return (-1);
-	if (access(argv[argc -1], F_OK) == -1)
-		return (-1);
-	return (0);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	int	i;
 	int	file_in;
 	int	file_out;
 
-	if (argc >= 5 && (checker(argv, argc) == 0))
+	if (argc >= 5)
 	{
 		if (ft_strncmp(argv[1], "here_doc", 8) == 0)
 		{
