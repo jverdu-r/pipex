@@ -6,7 +6,7 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 17:28:15 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/02/23 18:55:48 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/03/02 16:42:15 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		ft_putstr_fd("\nERROR: wrong number of arguments\n", 1);
 		ft_putstr_fd("EX: ./pipex <file 1> <cmd 1> <cmd 2> <file 2>", 1);
+		return (1);
 	}
 	return (0);
 }
