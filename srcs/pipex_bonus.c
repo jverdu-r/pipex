@@ -36,20 +36,19 @@ void	child_proc(char *arg, char **envp)
 	}
 }
 
-void	here_doc(char *limit, int argc)
+void	here_doc(char *limit)
 {
 	pid_t	read;
 	int		fd[2];
 	char	*line;
 
-	if (argc < 6)
-		usage();
 	if (pipe(fd) == -1)
 		error();
 	read = fork();
 	if (read == 0)
 	{
 		close(fd[0]);
+		ft_putstr_fd("", fd[1]);
 		while (gnllite(&line))
 		{
 			if (ft_strncmp(line, limit, ft_strlen(limit)) == 0)
@@ -97,7 +96,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			i = 3;
 			file_out = open_file(argv[argc - 1], 0);
-			here_doc(argv[2], argc);
+			here_doc(argv[2]);
 		}
 		else
 		{
